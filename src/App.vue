@@ -3,11 +3,11 @@
     <router-view/>
     <mt-tabbar v-model="selected" fixed>
       <mt-tab-item id="热映">
-        <!-- <img slot="icon" src="../assets/100x100.png"> -->
+        <i slot="icon" class="icon-ticket"></i>
         热映
       </mt-tab-item>
       <mt-tab-item id="找片">
-        <!-- <img slot="icon" src="../assets/100x100.png"> -->
+        <i slot="icon" class="icon-eye"></i>
         找片
       </mt-tab-item>
     </mt-tabbar>
@@ -17,6 +17,7 @@
 <script>
 import Vue from 'vue'
 import { Tabbar, TabItem, TabContainer, TabContainerItem, Cell } from 'mint-ui'
+import './assets/icomoon/style.css'
 
 Vue.component(Tabbar.name, Tabbar)
 Vue.component(TabItem.name, TabItem)
@@ -55,5 +56,8 @@ export default {
   color: #2c3e50;
   position: relative;
   z-index: 1;
+}
+a:hover {
+  text-decoration: none
 }
 </style>

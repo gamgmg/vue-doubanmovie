@@ -1,6 +1,14 @@
 <template>
   <div class="hot-movie">
-    <div><input type="text" readonly placeholder="电影/电视剧/影人" @click="toSearch"></div>
+    <div class="header">
+      <div @click="toCity">
+        <span>广州</span>
+        <i></i>
+      </div>
+      <div class="search-box">
+        <input type="text" readonly placeholder="电影/电视剧/影人" @click="toSearch">
+      </div>
+    </div>
     <mt-navbar v-model="selected">
       <mt-tab-item id="1">正在热映</mt-tab-item>
       <mt-tab-item id="2">即将上映</mt-tab-item>
@@ -21,15 +29,15 @@
             </ul>
         </mt-loadmore>
       </mt-tab-container-item>
+      <mt-spinner v-if="loading" class="loading" type="snake"></mt-spinner>
     </mt-tab-container>
-    <!-- <mt-spinner v-if="loading" class="loading" color="#26a2ff" type="snake"></mt-spinner> -->
     <router-view/>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import { Navbar, TabItem, TabContainer, TabContainerItem, Loadmore, Spinner } from 'mint-ui'
+import { Navbar, TabItem, TabContainer, TabContainerItem, Loadmore, Spinner, Button } from 'mint-ui'
 import originJsonp from 'jsonp'
 import { getInTheatersData, getComingSoonData } from '../api/hotMovie'
 
@@ -39,6 +47,7 @@ Vue.component(TabContainer.name, TabContainer)
 Vue.component(TabContainerItem.name, TabContainerItem)
 Vue.component(Loadmore.name, Loadmore)
 Vue.component(Spinner.name, Spinner)
+Vue.component(Button.name, Button)
 export default {
   name: 'hot-movie',
   data () {
@@ -54,13 +63,27 @@ export default {
     }
   },
   created () {
+    this.loading = true
     this.getInTheaters()
   },
   watch: {
     selected (val, oldVal) {
       switch (val) {
-        case '2': !this.comingSoonData.subjects && this.getComingSoon(); break
-        default: !this.inTheatersData.subjects && this.getInTheaters(); break
+        // case '2': !this.comingSoonData.subjects && this.loading = true; this.getComingSoon(); break
+        // default: !this.inTheatersData.subjects && this.loading = true; this.getInTheaters(); break
+        case '2':
+          if(!this.comingSoonData.subjects){
+            this.loading = true
+            this.getComingSoon()
+          }
+          break
+        default:
+          if(!this.inTheatersData.subjects){
+            this.loading = true
+            this.getInTheaters()
+
+          }
+          break
       }
     }
   },
@@ -68,6 +91,7 @@ export default {
     getInTheaters (cb) {
       getInTheatersData().then((res) => {
         if (res) {
+          this.loading = false
           console.log(res)
           this.inTheatersData = res
           cb && cb()
@@ -77,6 +101,7 @@ export default {
     getComingSoon (cb) {
       getComingSoonData().then((res) => {
         if (res) {
+          this.loading = false
           console.log(res)
           this.comingSoonData = res
           cb && cb()
@@ -91,7 +116,7 @@ export default {
     loadBottom () {
       if(this.selected === '1'){
         this.inTheatersStart += 20
-        getInTheatersData(this.inTheatersStart).then((res) => {
+        getInTheatersData({start: this.inTheatersStart}).then((res) => {
           if (res) {
             console.log(res)
             this.inTheatersData.subjects = this.inTheatersData.subjects.concat(res.subjects)
@@ -103,7 +128,7 @@ export default {
         })
       }else{
         this.comingSoonStart += 20
-        getComingSoonData(this.comingSoonStart).then((res) => {
+        getComingSoonData({start: this.comingSoonStart}).then((res) => {
           if (res) {
             console.log(res)
             this.comingSoonData.subjects = this.comingSoonData.subjects.concat(res.subjects)
@@ -120,6 +145,9 @@ export default {
     },
     toSearch () {
       this.$router.push('/search')
+    },
+    toCity () {
+      this.$router.push('/city')
     }
   }
 }
@@ -136,9 +164,6 @@ ul {
 }
 li {
   margin: 0 10px;
-}
-a {
-  color: #42b983;
 }
 .mint-tab-container {
     position: absolute;
@@ -159,6 +184,15 @@ a {
   margin-top: -.56rem;
   left: 50%;
   margin-left: -.56rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.search-box {
+  flex: 1;
 }
 
 </style>

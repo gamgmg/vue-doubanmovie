@@ -3,7 +3,8 @@ import Router from 'vue-router'
 import HotMovie from '@/components/HotMovie'
 import Subject from '@/components/Subject'
 import FindMovie from '@/components/FindMovie'
-import SearchPage from '@/components/SearchPage'
+import Search from '@/components/Search'
+import City from '@/components/City'
 
 Vue.use(Router)
 
@@ -21,8 +22,13 @@ export default new Router({
       	},
         {
           path: '/search',
-          name: 'SearchPage',
-          component: SearchPage
+          name: 'Search',
+          component: Search
+        },
+        {
+          path: '/city',
+          name: 'City',
+          component: City
         }
       ]
     },

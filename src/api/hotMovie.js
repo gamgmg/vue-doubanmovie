@@ -2,18 +2,26 @@ import jsonp from "./jsonp"
 import {URL} from "./config"
 
 // 获取正在热映数据
-export function getInTheatersData (start = 0, count = 20) {
+export function getInTheatersData (params = {}) {
+	params.start = 0
+	params.count = 20
+	params.city = '广州'
 	const data = Object.assign({}, {
-		start,
-		count
+		start: params.start,
+		count: params.count,
+		city: params.city
 	})
 	return jsonp(URL.in_theaters, data)
 }
 // 获取即将上映数据
-export function getComingSoonData (start = 0, count = 20) {
+export function getComingSoonData (params = {}) {
+	params.start = 0
+	params.count = 20
+	params.city = '广州'
 	const data = Object.assign({}, {
-		start,
-		count
+		start: params.start,
+		count: params.count,
+		city: params.city
 	})
 	return jsonp(URL.coming_soon, data)
 }

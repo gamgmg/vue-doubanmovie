@@ -1,5 +1,5 @@
 <template>
-  <div class="search-page">
+  <div class="search">
   	<div class="search-top">
   		<i class="icon-back back" @click="back"></i>
   		<!-- <mt-button icon="back" slot="left" @click="back"></mt-button> -->
@@ -24,7 +24,7 @@ import '../assets/icomoon/style.css'
 Vue.component(Spinner.name, Spinner)
 
 export default {
-  name: 'search-page',
+  name: 'search',
   data () {
     return {
 			keywords: '',
@@ -84,7 +84,7 @@ h1, h2 {
 a {
   color: #42b983;
 }
-.search-page {
+.search {
   position: absolute;
   overflow: scroll;
   top: 0;
