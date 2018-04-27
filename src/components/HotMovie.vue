@@ -2,7 +2,7 @@
   <div class="hot-movie">
     <div class="header">
       <div @click="toCity">
-        <span>广州</span>
+        <span>{{cityed}}</span>
         <i></i>
       </div>
       <div class="search-box">
@@ -37,6 +37,7 @@
 
 <script>
 import Vue from 'vue'
+import { mapState } from 'vuex'
 import { Navbar, TabItem, TabContainer, TabContainerItem, Loadmore, Spinner, Button } from 'mint-ui'
 import originJsonp from 'jsonp'
 import { getInTheatersData, getComingSoonData } from '../api/hotMovie'
@@ -52,7 +53,7 @@ export default {
   name: 'hot-movie',
   data () {
     return {
-      value: '',
+      city: '广州',
       selected: '1',
       allLoaded: false,
       inTheatersData: {},
@@ -62,15 +63,18 @@ export default {
       loading: false
     }
   },
-  created () {
+  mounted () {
     this.loading = true
     this.getInTheaters()
+  },
+  computed: {
+    cityed () {
+      return this.$store.state.cityed
+    }
   },
   watch: {
     selected (val, oldVal) {
       switch (val) {
-        // case '2': !this.comingSoonData.subjects && this.loading = true; this.getComingSoon(); break
-        // default: !this.inTheatersData.subjects && this.loading = true; this.getInTheaters(); break
         case '2':
           if(!this.comingSoonData.subjects){
             this.loading = true
@@ -85,11 +89,19 @@ export default {
           }
           break
       }
+    },
+    cityed (val, oldVal) {
+      if(val !== oldVal){
+        this.loading = true
+        this.selected === '1'
+          ? this.getInTheaters()
+          : this.getComingSoon()
+      }
     }
   },
   methods: {
     getInTheaters (cb) {
-      getInTheatersData().then((res) => {
+      getInTheatersData({city: this.cityed}).then((res) => {
         if (res) {
           this.loading = false
           console.log(res)
@@ -116,7 +128,7 @@ export default {
     loadBottom () {
       if(this.selected === '1'){
         this.inTheatersStart += 20
-        getInTheatersData({start: this.inTheatersStart}).then((res) => {
+        getInTheatersData({start: this.inTheatersStart, city: this.cityed}).then((res) => {
           if (res) {
             console.log(res)
             this.inTheatersData.subjects = this.inTheatersData.subjects.concat(res.subjects)

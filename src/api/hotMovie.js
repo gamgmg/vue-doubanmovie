@@ -2,10 +2,7 @@ import jsonp from "./jsonp"
 import {URL} from "./config"
 
 // 获取正在热映数据
-export function getInTheatersData (params = {}) {
-	params.start = 0
-	params.count = 20
-	params.city = '广州'
+export function getInTheatersData (params = {start: 0, count: 20, city: '广州'}) {
 	const data = Object.assign({}, {
 		start: params.start,
 		count: params.count,
@@ -14,14 +11,10 @@ export function getInTheatersData (params = {}) {
 	return jsonp(URL.in_theaters, data)
 }
 // 获取即将上映数据
-export function getComingSoonData (params = {}) {
-	params.start = 0
-	params.count = 20
-	params.city = '广州'
+export function getComingSoonData (params = {start: 0, count: 20}) {
 	const data = Object.assign({}, {
 		start: params.start,
-		count: params.count,
-		city: params.city
+		count: params.count
 	})
 	return jsonp(URL.coming_soon, data)
 }
