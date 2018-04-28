@@ -7,6 +7,14 @@ const URL = {
 	subject: "https://api.douban.com/v2/movie/subject",
 	/*电影搜索*/
 	search: "https://api.douban.com/v2/movie/search",
+	/*Top250*/
+	top250: "https://api.douban.com/v2/movie/top250",
+	/*北美票房榜*/
+	us_box: "https://api.douban.com/v2/movie/us_box",
+	/*口碑榜*/
+	weekly: "https://api.douban.com/v2/movie/weekly",
+	/*新片榜*/
+	new_movies: "https://api.douban.com/v2/movie/new_movies",
 };
 
 const PARAM = {

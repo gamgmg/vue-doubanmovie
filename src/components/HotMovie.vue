@@ -6,7 +6,7 @@
         <i></i>
       </div>
       <div class="search-box">
-        <input type="text" readonly placeholder="电影/电视剧/影人" @click="toSearch">
+        <input type="text" readonly placeholder="电影/影人" @click="toSearch">
       </div>
     </div>
     <mt-navbar v-model="selected">
@@ -31,7 +31,9 @@
       </mt-tab-container-item>
       <mt-spinner v-if="loading" class="loading" type="snake"></mt-spinner>
     </mt-tab-container>
-    <router-view/>
+    <transition name="slide-left">
+      <router-view/>
+    </transition>
   </div>
 </template>
 
@@ -60,7 +62,8 @@ export default {
       comingSoonData: {},
       inTheatersStart: 0,
       comingSoonStart: 0,
-      loading: false
+      loading: false,
+      transitionName: 'slide-left'
     }
   },
   mounted () {
@@ -85,7 +88,6 @@ export default {
           if(!this.inTheatersData.subjects){
             this.loading = true
             this.getInTheaters()
-
           }
           break
       }
@@ -206,5 +208,14 @@ li {
 .search-box {
   flex: 1;
 }
-
+.slide-left-enter-active, .slide-left-leave-active {
+  transition: transform .5s ease;
+  transform: translate3d(0, 0, 0);
+}
+.slide-left-enter, .slide-left-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  transform: translate3d(100%, 0 , 0);
+}
+.slide-left-enter-to, .slide-left-leave {
+  transform: translate3d(0, 0 , 0);
+}
 </style>
