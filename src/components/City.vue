@@ -5,7 +5,7 @@
     </mt-header>
     <mt-index-list>
       <mt-index-section v-for="(c, key) in city" :key="key" :index="key">
-        <div v-for="(cc, i) in c" :key="i" :title="cc" @click="selectCity(cc)">{{cc}}</div>
+        <li class="city-list" v-for="(cc, i) in c" :key="i" :title="cc" @click="selectCity(cc)">{{cc}}</li>
         <!-- <mt-cell v-for="(cc, i) in c" :key="i" :title="cc" @click="selectCity(cc)"></mt-cell> -->
       </mt-index-section>
     </mt-index-list>
@@ -56,14 +56,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-a {
-  color: #42b983;
-}
-
+<style lang="scss">
 .city {
   position: absolute;
   overflow: scroll;
@@ -73,5 +66,41 @@ a {
   background-color: #fff;
   z-index: 100;
   text-align: left;
+  .mint-indexlist {
+    .mint-indexsection {
+      .mint-indexsection-index {
+        font-size: 25px;
+        padding: 0 0 0 30px;
+        height: 60px;
+        line-height: 60px;
+        color: #9b9b9b;
+      }
+      ul {
+        padding-left: 30px;
+        .city-list {
+          height: 88px;
+          line-height: 88px;
+          font-size: 32px;
+          box-sizing: border-box;
+          font-weight: 500;
+          &:not(:last-child) {
+            border-bottom: 1px solid #c8c7cc;
+          }
+        }  
+      }
+      
+    }
+    .mint-indexlist-nav {
+      color: #007aff;
+      background-color: #f4f4f4;
+      border-left: none;
+      .mint-indexlist-navitem {
+        font-size: 25px;
+      }
+    }
+    .mint-indexsection-index {
+      background-color: #f4f4f4;
+    }
+  }
 }
 </style>

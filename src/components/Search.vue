@@ -1,7 +1,7 @@
 <template>
   <div class="search">
   	<div class="search-top">
-  		<i class="icon-back back" @click="back"></i>
+  		<i class="icon-chevron-left back" @click="back"></i>
   		<!-- <mt-button icon="back" slot="left" @click="back"></mt-button> -->
   		<input autofocus type="search" @change="searchData($event)" placeholder="电影/电视剧/影人">
   	</div>

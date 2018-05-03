@@ -7,7 +7,7 @@
     
     <mt-tabbar v-model="selected" fixed>
       <mt-tab-item id="热映">
-        <i slot="icon" class="icon-ticket"></i>
+        <i slot="icon" class="icon-film"></i>
         热映
       </mt-tab-item>
       <mt-tab-item id="找片">
@@ -50,18 +50,40 @@ export default {
 }
 </script>
 
-<style>
-#app {
-  height: 100%;
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  position: relative;
-  z-index: 1;
+<style lang="scss">
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  margin: 0;
 }
 a:hover {
-  text-decoration: none
+  text-decoration: none !important;
+}
+
+#app {
+  height: 100%;
+  font-family: "Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
+  position: relative;
+  z-index: 1;
+  .mint-tabbar {
+    height: 98px;
+    line-height: 98px;
+    background-color: #f8f8f8;
+    border-top: 2px solid #b3b3b3;
+    .mint-tab-item {
+      color: #9b9b9b;
+      &.is-selected {
+        color: #494949;
+        background-color: inherit;
+      }
+      .mint-tab-item-icon {
+        width: auto;
+        height: auto;
+        font-size: 50px;
+      }
+    }
+  }
 }
 </style>

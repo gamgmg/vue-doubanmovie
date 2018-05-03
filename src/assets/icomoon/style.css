@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?xn9j4z');
-  src:  url('fonts/icomoon.eot?xn9j4z#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?xn9j4z') format('truetype'),
-    url('fonts/icomoon.woff?xn9j4z') format('woff'),
-    url('fonts/icomoon.svg?xn9j4z#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?jhperj');
+  src:  url('fonts/icomoon.eot?jhperj#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?jhperj') format('truetype'),
+    url('fonts/icomoon.woff?jhperj') format('woff'),
+    url('fonts/icomoon.svg?jhperj#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,12 +24,108 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-back:before {
+.icon-chevron-left:before {
+  content: "\f053";
+}
+.icon-chevron-down:before {
+  content: "\f078";
+}
+.icon-angle-down:before {
+  content: "\f107";
+}
+.icon-home:before {
   content: "\e900";
 }
-.icon-ticket:before {
-  content: "\e939";
+.icon-home2:before {
+  content: "\e901";
+}
+.icon-home3:before {
+  content: "\e902";
+}
+.icon-play:before {
+  content: "\e912";
+}
+.icon-film:before {
+  content: "\e913";
+}
+.icon-video-camera:before {
+  content: "\e914";
+}
+.icon-dice:before {
+  content: "\e915";
+}
+.icon-book:before {
+  content: "\e91f";
+}
+.icon-books:before {
+  content: "\e920";
+}
+.icon-library:before {
+  content: "\e921";
+}
+.icon-file-text:before {
+  content: "\e922";
+}
+.icon-profile:before {
+  content: "\e923";
+}
+.icon-stack:before {
+  content: "\e92e";
+}
+.icon-price-tag:before {
+  content: "\e935";
+}
+.icon-price-tags:before {
+  content: "\e936";
+}
+.icon-location:before {
+  content: "\e947";
+}
+.icon-location2:before {
+  content: "\e948";
+}
+.icon-user:before {
+  content: "\e971";
+}
+.icon-users:before {
+  content: "\e972";
+}
+.icon-spinner:before {
+  content: "\e97a";
+}
+.icon-spinner11:before {
+  content: "\e984";
+}
+.icon-binoculars:before {
+  content: "\e985";
+}
+.icon-search:before {
+  content: "\e986";
 }
 .icon-eye:before {
   content: "\e9ce";
+}
+.icon-bookmark:before {
+  content: "\e9d2";
+}
+.icon-bookmarks:before {
+  content: "\e9d3";
+}
+.icon-star-empty:before {
+  content: "\e9d7";
+}
+.icon-star-half:before {
+  content: "\e9d8";
+}
+.icon-star-full:before {
+  content: "\e9d9";
+}
+.icon-heart:before {
+  content: "\e9da";
+}
+.icon-play2:before {
+  content: "\ea15";
+}
+.icon-play3:before {
+  content: "\ea1c";
 }

@@ -1,31 +1,64 @@
 <template>
   <div class="hot-movie">
     <div class="header">
-      <div @click="toCity">
+      <div class="select-city" @click="toCity">
         <span>{{cityed}}</span>
-        <i></i>
+        <i class="icon-angle-down"></i>
       </div>
       <div class="search-box">
-        <input type="text" readonly placeholder="电影/影人" @click="toSearch">
+        <i class="icon-search"></i>
+        <span @click="toSearch">电影 / 影人</span>
       </div>
     </div>
-    <mt-navbar v-model="selected">
-      <mt-tab-item id="1">正在热映</mt-tab-item>
-      <mt-tab-item id="2">即将上映</mt-tab-item>
+    <mt-navbar class="select-tab" v-model="selected">
+      <mt-tab-item id="1"><span>正在热映</span></mt-tab-item>
+      <mt-tab-item id="2"><span>即将上映</span></mt-tab-item>
     </mt-navbar>
     <!-- tab-container -->
     <mt-tab-container v-model="selected">
       <mt-tab-container-item id="1">
         <mt-loadmore :auto-fill="false" :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore1">
           <ul class="movie-item">
-            <li v-for="n in inTheatersData.subjects" :key="n.id" @click="toDetail(n.id)">{{n.title}}</li>
+            <li v-for="n in inTheatersData.subjects" :key="n.id" @click="toDetail(n.id)">
+              <div class="movie-img"><img v-lazy="n.images.medium" :alt="n.title"></div>
+              <div class="movie-info">
+                <h3 class="title">{{n.title}}</h3>
+                <div class="rating"></div>
+                <div class="staff">
+                  <p>导演：<span v-for="d in n.directors">{{d.name}}</span></p>
+                  <p>演员：<span v-for="c in n.casts">{{c.name}}</span></p>
+                </div>
+              </div>
+              <div class="movie-slide">
+                <p>{{n.collect_count}}人看过</p>
+                <div class="goupiao-btn">
+                  <button>购票</button>
+                </div>
+              </div>
+            </li>
           </ul>
         </mt-loadmore>
       </mt-tab-container-item>
       <mt-tab-container-item id="2">
           <mt-loadmore :auto-fill="false" :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore2">
             <ul class="movie-item">
-              <li v-for="n in comingSoonData.subjects" :key="n.id" @click="toDetail(n.id)">{{n.title}}</li>
+              <li v-for="n in comingSoonData.subjects" :key="n.id" @click="toDetail(n.id)">
+                <div class="movie-img"><img v-lazy="n.images.medium" :alt="n.title"></div>
+                <div class="movie-info">
+                  <h3 class="title">{{n.title}}</h3>
+                  <div class="rating"></div>
+                  <div class="staff">
+                    <p>导演：<span v-for="d in n.directors">{{d.name}}</span></p>
+                    <p>演员：<span v-for="c in n.casts">{{c.name}}</span></p>
+                  </div>
+                </div>
+                <div class="movie-slide">
+                  <p>{{n.collect_count}}人看过</p>
+                  <div class="goupiao-btn">
+                    <button>想看</button>
+                  </div>
+                </div>
+              </li>
             </ul>
         </mt-loadmore>
       </mt-tab-container-item>
@@ -40,7 +73,7 @@
 <script>
 import Vue from 'vue'
 import { mapState } from 'vuex'
-import { Navbar, TabItem, TabContainer, TabContainerItem, Loadmore, Spinner, Button } from 'mint-ui'
+import { Navbar, TabItem, TabContainer, TabContainerItem, Loadmore, Spinner, Button, Lazyload } from 'mint-ui'
 import originJsonp from 'jsonp'
 import { getInTheatersData, getComingSoonData } from '../api/hotMovie'
 
@@ -51,6 +84,7 @@ Vue.component(TabContainerItem.name, TabContainerItem)
 Vue.component(Loadmore.name, Loadmore)
 Vue.component(Spinner.name, Spinner)
 Vue.component(Button.name, Button)
+Vue.use(Lazyload)
 export default {
   name: 'hot-movie',
   data () {
@@ -168,28 +202,138 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  margin: 0 10px;
-}
-.mint-tab-container {
+<style lang="scss" scoped>
+.hot-movie {
+  height: 100%;
+  .header {
+    display: flex;
+    padding: 10px 18px 0;
+    align-items: center;
+    .select-city {
+      font-size: 28px;
+      margin-right: 15px;
+    }
+    .search-box {
+      flex: 1;
+      background-color: #f6f6f6;
+      height: 60px;
+      line-height: 60px;
+      margin-right: 22px;
+      font-size: 28px;
+      border-radius: 8px;
+      i {
+        width: 30px;
+        height: 30px;
+        margin: 15px;
+        color: #9b9b9b;
+        display: inline-block;
+      }
+      span {
+        line-height: 100%;
+        color: #cfcfcf;
+      }
+    }
+  }
+  .mint-navbar {
+    margin-top: 20px;
+    height: 84px;
+    .mint-tab-item {
+      line-height: 84px;
+      color: #9b9b9b;
+      &.is-selected {
+        color: #494949;
+        border-bottom: 4px solid #494949;
+        z-index: 1;
+      }
+      span {
+        font-size: 28px;
+      }
+    }
+  }
+  .mint-tab-container {
     position: absolute;
     width: 100%;
-    top: 110px;
-    bottom: 55px;
+    top: 174px;
+    bottom: 98px;
     overflow: scroll;
     border-bottom: 1px solid red;
-}
-
-.movie-item li {
-  line-height: 288px;
+    .mint-loadmore {
+      .movie-item {
+        li {
+          display: flex;
+          padding: 30px 0 30px 30px;
+          height: 286px;
+          box-sizing: border-box;
+          border-top: 1px solid #dfdfdf;
+          .movie-img {
+            width: 160px;
+            height: 224px;
+            margin-right: 20px;
+            img {
+              width: 100%;
+              height: 100%;
+            }
+          }
+          .movie-info {
+            width: 230px;
+            padding: 0 10px;
+            .title {
+              height: 42px;
+              line-height: 42px;
+              font-size: 32px;
+              font-weight: 600;
+              color: #494949;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+            .rating {
+              height: 48px;
+              line-height: 48px;
+            }
+            .staff {
+              color: #9b9b9b;
+              font-size: 20px;
+              p {
+                span:not(:last-child) {
+                  &::after {
+                    content: ' / ';
+                    display: inline;
+                  }
+                }
+                &:last-child {
+                  display: -webkit-box;
+                  -webkit-box-orient: vertical;
+                  -webkit-line-clamp: 2;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                }
+              }
+            }
+          }
+          .movie-slide {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #ff6677;
+            .goupiao-btn {
+              margin-top: 25px;
+              button {
+                padding: 14px 32px;
+                color: #ff6677;
+                border: 2px solid #ff6677;
+                border-radius: 10px;
+                background-color: #fff;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 .loading {
@@ -200,16 +344,12 @@ li {
   margin-left: -.56rem;
 }
 
-.header {
-  display: flex;
-  align-items: center;
+image[lazy=loading] {
+  background-color: #e5e5e5;
 }
 
-.search-box {
-  flex: 1;
-}
 .slide-left-enter-active, .slide-left-leave-active {
-  transition: transform .5s ease;
+  transition: transform .3s;
   transform: translate3d(0, 0, 0);
 }
 .slide-left-enter, .slide-left-leave-to /* .fade-leave-active below version 2.1.8 */ {
