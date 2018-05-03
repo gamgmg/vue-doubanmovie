@@ -65,7 +65,7 @@ export default {
       newMoviesData: {}
     }
   },
-  mounted () {
+  created () {
     this.getTop250()
     this.getUsBox()
     this.getWeekly()

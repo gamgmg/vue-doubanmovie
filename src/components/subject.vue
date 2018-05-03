@@ -22,18 +22,27 @@ export default {
       subjectData: {}
     }
   },
-  mounted () {
-    this.getSubject()
+  beforeRouteEnter (to, from, next) {
+    getSubjectData(to.params.id).then((res) => {
+      if(res){
+        next(vm => {
+          vm.getSubject(res)
+        })
+      }
+    })
+  },
+  beforeRouteUpdate (to, from, next) {
+    getSubjectData(to.params.id).then((res) => {
+      if(res){
+        this.subjectData = {}
+        this.getSubject(res)
+        next()
+      }
+    })
   },
   methods: {
-    getSubject () {
-      let id = this.$router.history.current.params.id
-      getSubjectData(id).then((res) => {
-        if(res){
-          console.log(res)
-          this.subjectData = res
-        }
-      })
+    getSubject (res) {
+      this.subjectData = res
     },
     back () {
       this.$router.back()

@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <router-view/>
+    <keep-alive>
+      <router-view v-if="$route.meta.keepAlive"/>
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive"/>
+    
     <mt-tabbar v-model="selected" fixed>
       <mt-tab-item id="热映">
         <i slot="icon" class="icon-ticket"></i>

@@ -66,7 +66,7 @@ export default {
       transitionName: 'slide-left'
     }
   },
-  mounted () {
+  created () {
     this.loading = true
     this.getInTheaters()
   },
