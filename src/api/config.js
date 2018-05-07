@@ -31,4 +31,6 @@ const OPTION = {
 
 const CODE_SUCCESS = 0
 
-export {URL, PARAM, OPTION, CODE_SUCCESS}
+const apikey = '0b2bdeda43b5688921839c8ecb20399b'
+
+export {URL, PARAM, OPTION, CODE_SUCCESS, apikey}

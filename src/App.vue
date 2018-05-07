@@ -83,6 +83,9 @@ a:hover {
         height: auto;
         font-size: 50px;
       }
+      .mint-tab-item-label {
+        font-size: 26px;
+      }
     }
   }
 }

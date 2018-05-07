@@ -1,5 +1,5 @@
 import jsonp from "./jsonp"
-import {URL} from "./config"
+import {URL, apikey} from "./config"
 
 // 获取正在热映数据
 export function getInTheatersData (params = {start: 0, count: 20, city: '广州'}) {
@@ -30,5 +30,18 @@ export function getSearchData (q = '', start = 0, count = 20) {
 
 // 获取电影详情
 export function getSubjectData (id) {
-	return jsonp(URL.subject + '/' + id)
+	const data = Object.assign({}, {
+		apikey,
+		city: '广州'
+	})
+	return jsonp(URL.subject + '/' + id, data)
+}
+
+// 获取电影条目剧照
+export function getMoviePhotosData (id) {
+	const data = Object.assign({}, {
+		apikey,
+		city: '广州'
+	})
+	return jsonp(URL.subject + '/' + id + '/photos', data)
 }

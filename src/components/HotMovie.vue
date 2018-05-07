@@ -19,11 +19,17 @@
       <mt-tab-container-item id="1">
         <mt-loadmore :auto-fill="false" :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore1">
           <ul class="movie-item">
-            <li v-for="n in inTheatersData.subjects" :key="n.id" @click="toDetail(n.id)">
+            <li v-for="n in inTheatersData.subjects" :key="n.id" @click="toDetail(n.id, $event)">
               <div class="movie-img"><img v-lazy="n.images.medium" :alt="n.title"></div>
               <div class="movie-info">
                 <h3 class="title">{{n.title}}</h3>
-                <div class="rating"></div>
+                <div class="rating">
+                  <span v-if="n.rating.average !== 0">
+                    <Star :stars="Number(n.rating.stars)"/>
+                    <span>{{n.rating.average}}</span>
+                  </span>
+                  <span v-else>暂无平分</span>
+                </div>
                 <div class="staff">
                   <p>导演：<span v-for="d in n.directors">{{d.name}}</span></p>
                   <p>演员：<span v-for="c in n.casts">{{c.name}}</span></p>
@@ -64,8 +70,8 @@
       </mt-tab-container-item>
       <mt-spinner v-if="loading" class="loading" type="snake"></mt-spinner>
     </mt-tab-container>
-    <transition name="slide-left">
-      <router-view/>
+    <transition :name="transitionName">
+      <router-view class="child-view"/>
     </transition>
   </div>
 </template>
@@ -76,6 +82,7 @@ import { mapState } from 'vuex'
 import { Navbar, TabItem, TabContainer, TabContainerItem, Loadmore, Spinner, Button, Lazyload } from 'mint-ui'
 import originJsonp from 'jsonp'
 import { getInTheatersData, getComingSoonData } from '../api/hotMovie'
+import Star from './Star'
 
 Vue.component(Navbar.name, Navbar)
 Vue.component(TabItem.name, TabItem)
@@ -100,9 +107,26 @@ export default {
       transitionName: 'slide-left'
     }
   },
+  components: {
+    Star
+  },
   created () {
-    this.loading = true
-    this.getInTheaters()
+    if(!this.inTheatersData.subjects){
+      this.loading = true
+      this.getInTheaters()
+    }
+  },
+  beforeRouteUpdate (to, from, next) {
+    // 如果isBack为true时，证明是用户点击了回退，执行slide-right动画
+    let isBack = this.$router.isBack
+    if (isBack) {
+      this.transitionName = 'slide-right'
+    } else {
+      this.transitionName = 'slide-left'
+    }
+    // 做完回退动画后，要设置成前进动画，否则下次打开页面动画将还是回退
+    this.$router.isBack = false
+    next()
   },
   computed: {
     cityed () {
@@ -127,6 +151,7 @@ export default {
       }
     },
     cityed (val, oldVal) {
+      console.log('触发3')
       if(val !== oldVal){
         this.loading = true
         this.selected === '1'
@@ -188,7 +213,8 @@ export default {
         })
       } 
     },
-    toDetail (id) {
+    toDetail (id, event) {
+      event.preventDefault()
       this.$router.push(`/subject/${id}`)
     },
     toSearch () {
@@ -323,6 +349,7 @@ export default {
               margin-top: 25px;
               button {
                 padding: 14px 32px;
+                font-size: 24px;
                 color: #ff6677;
                 border: 2px solid #ff6677;
                 border-radius: 10px;
@@ -339,23 +366,42 @@ export default {
 .loading {
   position: absolute;
   top: 50%;
-  margin-top: -.56rem;
+  margin-top: -15px;
   left: 50%;
-  margin-left: -.56rem;
+  margin-left: -15px;
 }
 
 image[lazy=loading] {
   background-color: #e5e5e5;
 }
 
-.slide-left-enter-active, .slide-left-leave-active {
+.child-view {
+  position: absolute;
+  width:100%;
+  transition: all .8s cubic-bezier(.55,0,.1,1);
+}
+
+.slide-left-enter, .slide-right-leave-active {
+  opacity: 0;
+  -webkit-transform: translate(50px, 0);
+  transform: translate(50px, 0);
+}
+.slide-left-leave-active, .slide-right-enter {
+  opacity: 0;
+  -webkit-transform: translate(-50px, 0);
+  transform: translate(-50px, 0);
+}
+</style>
+
+<style>
+/*.slide-left-enter-active, .slide-left-leave-active {
   transition: transform .3s;
   transform: translate3d(0, 0, 0);
 }
-.slide-left-enter, .slide-left-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.slide-left-enter, .slide-left-leave-to  .fade-leave-active below version 2.1.8  {
   transform: translate3d(100%, 0 , 0);
 }
 .slide-left-enter-to, .slide-left-leave {
   transform: translate3d(0, 0 , 0);
-}
+}*/
 </style>
