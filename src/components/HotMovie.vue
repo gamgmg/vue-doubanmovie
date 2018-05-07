@@ -343,8 +343,10 @@ export default {
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
             color: #ff6677;
+            p {
+              font-size: 20px;
+            }
             .goupiao-btn {
               margin-top: 25px;
               button {

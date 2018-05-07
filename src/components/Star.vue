@@ -29,6 +29,9 @@
 	.star {
 		display: inline-block;
 		position: relative;
+		i {
+			font-size: 20px;
+		}
 		.star-full {
 			position: absolute;
 			top: 0;

@@ -12,40 +12,45 @@
       <div class="movie-info">
         <div class="info">
           <h3>{{this.subjectData.title}}</h3>
-          <span>{{this.subjectData.year + '/' + this.subjectData.countries[0]}}</span>
-          <span class="genres" v-for="n in this.subjectData.genres">{{n}}</span>
-          <span>上映时间：{{this.subjectData.pubdates[0]}}</span>
-          <span>片长：{{this.subjectData.durations[0]}}</span>
+          <div>
+            <span>{{this.subjectData.year + '/' + this.subjectData.countries[0]}}</span>
+            <span class="genres" v-for="n in this.subjectData.genres">{{n}}</span>
+          </div>
+          <div><span>上映时间：{{this.subjectData.pubdates[0]}}</span></div>
+          <div><span>片长：{{this.subjectData.durations[0]}}</span></div>
         </div>
         <div class="rating">
-          <span>豆瓣评分</span>
-          <span>{{this.subjectData.rating.average}}</span>
+          <p>豆瓣评分</p>
+          <div class="rating-average">{{this.subjectData.rating.average}}</div>
           <Star :stars="Number(this.subjectData.rating.stars)"/>
-          <span>{{this.subjectData.collect_count}}</span>
+          <span class="collect-count">{{this.subjectData.collect_count}}人</span>
         </div>
-        <div>
-          <button>想看</button>
-          <button>看过</button>
-        </div>
+      </div>
+      <div class="movie-look">
+        <button>想看</button>
+        <button>
+          <span>看过</span>
+          <span><i class="icon-star-empty" v-for="n in 5"></i></span>
+        </button>
       </div>
       <div class="movie-summary">
-        <span>剧情简介</span>
+        <div class="label">剧情简介</div>
         <p>{{ this.subjectData.summary }}</p>
       </div>
-      <div class="movier">
-        <span>影人</span>
+      <div class="movie-people">
+        <div class="label">影人</div>
         <ul>
           <li v-for="(v, key) in this.movier" :key="key">
             <img :src="v.avatars.large" :alt="v.avatars.alt">
-            <div>{{v.name}}</div>
+            <div class="movie-people_name">{{v.name}}</div>
           </li>
         </ul>
       </div>
       <div class="movie-photos">
-        <span>预告片 / 剧照</span>
+        <div class="label">预告片 / 剧照</div>
         <ul>
           <li v-for="(v, key) in this.subjectData.photos">
-            <img :src="v.image" :alt="v.alt">
+            <img :src="v.image">
           </li>
         </ul>
       </div>
@@ -165,7 +170,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped>
+<style lang="scss">
 h1, h2 {
   font-weight: normal;
 }
@@ -179,10 +184,148 @@ a {
   width: 100%;
   background-color: #fff;
   z-index: 100;
-  .movier, .movie-photos {
-    li {
-      display: inline-block;
+  .mint-header {
+    height: 88px;
+    line-height: 88px;
+    background-color: rgba(0,0,0,.5);
+    .mintui {
+      font-size: 36px;
+    }
+  	h1 {
+  		font-size: 32px;
+  	}
+  }
+  .movie-poster {
+    height: 617px;
+    text-align: center;
+    img {
+      padding-top: 88px;
+      width: 342px;
+      height: 478px;
     }
   }
+  .movie-content, .movie-comments {
+    background-color: #f5f7fa;
+  }
+  .movie-content {
+    padding: 40px;
+    .movie-info {
+      display: flex;
+      margin-bottom: 60px;
+      .info {
+        flex: 1;
+        h3 {
+          font-size: 44px;
+          color: #494949;
+          margin-bottom: 18px;
+        }
+        div {
+          height: 26px;
+          line-height: 26px;
+          span {
+            font-size: 20px;
+            color: #9b9b9b;
+          }
+        }
+      }
+      .rating {
+        width: 168px;
+        height: 168px;
+        text-align: center;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0,0,0,.1);
+        p {
+          height: 34px;
+          line-height: 34px;
+          margin-top: 15px;
+          font-size: 20px;
+          color: #ccc;
+        }
+        .rating-average {
+          height: 46px;
+          line-height: 46px;
+          margin-bottom: 6px;
+          font-size: 46px;
+          color: #494949;
+        }
+        .collect-count {
+          font-size: 20px;
+          color: #9b9b9b;
+        }
+      }
+    }
+    .movie-look {
+      display: flex;
+      margin-bottom: 60px;
+      button {
+        font-size: 28px;
+        color: #fecb7e;
+        border: 2px solid #fecb7e;
+        box-sizing: border-box;
+        border-radius: 6px;
+        background-color: #f5f7fa;
+        &:first-child {
+          width: 187px;
+          height: 80px;
+          margin-right: 16px;
+        }
+        &:last-child {
+          flex: 1;
+        }
+      }
+    }
+    .movie-summary, .movie-people, .movie-photos {
+      .label {
+        height: 72px;
+        line-height: 72px;
+        font-size: 24px;
+        color: #9b9b9b;
+      }
+    }
+    .movie-summary {
+      p {
+        line-height: 42px;
+        font-size: 28px;
+        color: #494949;
+      }
+    }
+    .movie-people {
+      ul {
+        li {
+          display: inline-block;
+          width: 160px;
+          text-align: center;
+          img {
+            width: 160px;
+            height: 224px;
+          }
+          .movie-people_name {
+            padding: 0 10px;
+            font-size: 26px;
+            color: #494949;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+          &:not(:last-child) {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+    .movie-photos {
+      ul {
+        li {
+          display: inline-block;
+          img {
+            width: 440px;
+            height: 320px;
+          }
+        }
+      }
+    }
+  }
+
+  
 }
 </style>
