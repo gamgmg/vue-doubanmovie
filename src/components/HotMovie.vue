@@ -1,5 +1,5 @@
 <template>
-  <div class="hot-movie">
+  <div class="hot-movie" ref="hotMovieDom">
     <div class="header">
       <div class="select-city" @click="toCity">
         <span>{{cityed}}</span>

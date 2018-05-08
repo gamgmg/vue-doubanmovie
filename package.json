@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "better-scroll": "^1.10.3",
     "jsonp": "^0.2.1",
     "mint-ui": "^2.2.13",
     "node-sass": "^4.9.0",

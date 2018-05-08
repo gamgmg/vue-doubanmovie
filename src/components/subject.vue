@@ -1,11 +1,9 @@
 <template>
-  <div class="subject">
-    <mt-header fixed :title="this.subjectData.title">
-      <!-- <router-link to="/" slot="left"> -->
-        <mt-button icon="back" slot="left" @click="back"></mt-button>
-      <!-- </router-link> -->
+  <div class="subject" v-if="!loading" @scroll.native="scrollHandle" ref="subjectDOM">
+    <mt-header fixed :title="this.subjectTitle" class="mt-header" ref="mtheaderDOM">
+      <mt-button icon="back" slot="left" @click="back"></mt-button>
     </mt-header>
-    <section class="movie-poster">
+    <section class="movie-poster" ref="posterBg">
       <img :src="this.subjectData.images.large" :alt="this.subjectData.title">
     </section>
     <section class="movie-content">
@@ -13,8 +11,8 @@
         <div class="info">
           <h3>{{this.subjectData.title}}</h3>
           <div>
-            <span>{{this.subjectData.year + '/' + this.subjectData.countries[0]}}</span>
-            <span class="genres" v-for="n in this.subjectData.genres">{{n}}</span>
+            <span>{{this.subjectData.year + ' / ' + this.subjectData.countries[0] + ' / '}}</span>
+            <span class="genres" v-for="n in this.subjectData.genres"> {{n}} </span>
           </div>
           <div><span>上映时间：{{this.subjectData.pubdates[0]}}</span></div>
           <div><span>片长：{{this.subjectData.durations[0]}}</span></div>
@@ -23,7 +21,7 @@
           <p>豆瓣评分</p>
           <div class="rating-average">{{this.subjectData.rating.average}}</div>
           <Star :stars="Number(this.subjectData.rating.stars)"/>
-          <span class="collect-count">{{this.subjectData.collect_count}}人</span>
+          <div class="collect-count">{{this.subjectData.collect_count}}人</div>
         </div>
       </div>
       <div class="movie-look">
@@ -39,20 +37,20 @@
       </div>
       <div class="movie-people">
         <div class="label">影人</div>
-        <ul>
-          <li v-for="(v, key) in this.movier" :key="key">
+        <Slider>
+          <div class="slider-list" v-for="(v, key) in this.movier" :key="key">
             <img :src="v.avatars.large" :alt="v.avatars.alt">
             <div class="movie-people_name">{{v.name}}</div>
-          </li>
-        </ul>
+          </div>
+        </Slider>
       </div>
       <div class="movie-photos">
         <div class="label">预告片 / 剧照</div>
-        <ul>
-          <li v-for="(v, key) in this.subjectData.photos">
+        <Slider>
+          <div class="slider-list" v-for="(v, key) in this.subjectData.photos">
             <img :src="v.image">
-          </li>
-        </ul>
+          </div>
+        </Slider>
       </div>
     </section>
     <section class="movie-comments">
@@ -111,6 +109,8 @@ import Vue from 'vue'
 import { Header, Button } from 'mint-ui'
 import { getSubjectData, getMoviePhotosData } from '../api/hotMovie'
 import Star from './Star'
+import Slider from './Slider'
+import RGBaster from '../utils/rgbaster'
 
 Vue.component(Header.name, Header)
 Vue.component(Button.name, Button)
@@ -118,12 +118,16 @@ export default {
   name: 'subject',
   data () {
     return {
+      subjectTitle: '电影',
       subjectData: {},
-      movier: []
+      movier: [],
+      dominant: '',
+      loading: true //防止二级对象数据报错
     }
   },
   components: {
-    Star
+    Star,
+    Slider
   },
   beforeRouteEnter (to, from, next) {
     getSubjectData(to.params.id).then((res) => {
@@ -145,14 +149,48 @@ export default {
   },
   created () {
     this.getMoviePhotos()
-    // console.log(this.$router.history.current.params.id)
+  },
+  mounted () {
+    this.$nextTick(()=>{
+      let self = this
+      setTimeout(()=>{
+        this.$refs.subjectDOM.addEventListener('scroll', () => {
+          let scrollTop = this.$refs.subjectDOM.scrollTop
+          let scrollHeight = this.$refs.subjectDOM.scrollHeight
+          // console.log(top)
+          let top = scrollHeight * 0.12326
+          if(scrollTop <= top){
+            self.subjectTitle = '电影'
+            let mtheader = document.querySelector('.mt-header')
+            mtheader.style.backgroundColor = `rgba(${self.dominant + ',' + (1000) * .001})`
+          }else{
+            self.subjectTitle = self.subjectData.title
+          }
+        })
+      })
+    })
+  },
+  update () {
+    console.log('update')
   },
   methods: {
     getSubject (res) {
+      this.loading = false
       console.log('res',res)
       this.subjectData = res
-      this.movier = this.movier.concat(res.directors, res.casts)
-      console.log(this.movier)
+      this.movier = this.movier.concat(res.directors, res.casts) //拼接影人数据
+      let self = this
+      RGBaster.colors(this.subjectData.images.large, {
+        paletteSize: 30,
+        exclude: [ 'rgb(255,255,255)', 'rgb(0,0,0)' ],
+        success (payload) {
+          self.dominant = payload.dominant.slice(4,-1)
+          self.$refs.posterBg.style.backgroundColor = `rgba(${self.dominant},1)`
+          let mtheader = document.querySelector('.mt-header')
+          mtheader.style.backgroundColor = `rgba(${self.dominant},0)`
+        }
+      })
+      
     },
     back () {
       this.$router.back()
@@ -160,10 +198,13 @@ export default {
     getMoviePhotos () {
       let id = this.$router.history.current.params.id
       getMoviePhotosData(id).then(res => {
-        // if(res){
-          console.log('photos',res)
-        // }
+        if(res){
+          // console.log('photos',res)
+        }
       })
+    },
+    scrollHandle (e) {
+      console.log(e)
     }
   }
 }
@@ -183,6 +224,7 @@ a {
   bottom: 0;
   width: 100%;
   background-color: #fff;
+  overflow-y: scroll;
   z-index: 100;
   .mint-header {
     height: 88px;
@@ -225,6 +267,14 @@ a {
           span {
             font-size: 20px;
             color: #9b9b9b;
+          }
+        }
+        .genres {
+          &:not(:last-child) {
+            &:after {
+              content: '/';
+              display: inline-block;
+            }
           }
         }
       }
@@ -290,37 +340,36 @@ a {
       }
     }
     .movie-people {
-      ul {
-        li {
-          display: inline-block;
+      .slider-list {
+        display: inline-block;
+        width: 160px;
+        text-align: center;
+        img {
           width: 160px;
-          text-align: center;
-          img {
-            width: 160px;
-            height: 224px;
-          }
-          .movie-people_name {
-            padding: 0 10px;
-            font-size: 26px;
-            color: #494949;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-          }
-          &:not(:last-child) {
-            margin-right: 10px;
-          }
+          height: 224px;
+        }
+        .movie-people_name {
+          padding: 0 10px;
+          font-size: 26px;
+          color: #494949;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        &:not(:last-child) {
+          margin-right: 10px;
         }
       }
     }
     .movie-photos {
-      ul {
-        li {
-          display: inline-block;
-          img {
-            width: 440px;
-            height: 320px;
-          }
+      .slider-list {
+        display: inline-block;
+        img {
+          width: 440px;
+          height: 320px;
+        }
+        &:not(:last-child) {
+          margin-right: 10px;
         }
       }
     }
