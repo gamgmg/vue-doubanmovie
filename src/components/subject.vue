@@ -56,7 +56,7 @@
     <section class="movie-comments">
       <div class="header">评论</div>
       <div class="comments">
-        <div>短评</div>
+        <div class="label">短评</div>
         <div class="comments-list">
           <ul>
             <li v-for="(v, key) in this.subjectData.popular_comments" :key="key">
@@ -65,9 +65,11 @@
               </div>
               <div class="comment-content">
                 <div class="author-info">
-                  <span>{{v.author.name}}</span>
-                  <Star :stars="Number(v.rating.value)"/>
-                  <div>
+                  <div class="author_name">
+                    <span>{{v.author.name}}</span>
+                    <Star :stars="Number(v.rating.value)"/>
+                  </div>
+                  <div class="useful_count">
                     <i class="icon-heart"></i>
                     <span>{{v.useful_count}}</span>
                   </div>
@@ -82,20 +84,20 @@
             </li>
           </ul>
         </div>
-        <div>全部短评{{this.subjectData.comments_count}}条</div>
+        <div class="comments_count">全部短评{{this.subjectData.comments_count}}条</div>
       </div>
       <div class="reviews">
-        <div>影评</div>
-        <div>共{{this.subjectData.reviews_count}}篇</div>
+        <div class="label">影评</div>
+        <div class="reviews_count">共{{this.subjectData.reviews_count}}篇</div>
         <div class="reviews-list">
           <ul>
             <li v-for="(v, key) in this.subjectData.popular_reviews" :key="key">
               <h4 class="reviews-title">{{v.title}}</h4>
-              <div>
+              <div class="author_name">
                 <span>{{v.author.name}}</span>
-                <Star :stars="v.rating.value"/>
+                <Star class="star" :stars="v.rating.value"/>
               </div>
-              <div>{{v.summary}}</div>
+              <div class="summary">{{v.summary}}</div>
             </li>
           </ul>
         </div>
@@ -158,11 +160,11 @@ export default {
           let scrollTop = this.$refs.subjectDOM.scrollTop
           let scrollHeight = this.$refs.subjectDOM.scrollHeight
           // console.log(top)
-          let top = scrollHeight * 0.12326
+          let top = scrollHeight * 0.14
           if(scrollTop <= top){
             self.subjectTitle = '电影'
             let mtheader = document.querySelector('.mt-header')
-            mtheader.style.backgroundColor = `rgba(${self.dominant + ',' + (1000) * .001})`
+            mtheader.style.backgroundColor = `rgba(${self.dominant + ',' + (1000 - top + scrollTop) * .001})`
           }else{
             self.subjectTitle = self.subjectData.title
           }
@@ -244,6 +246,7 @@ a {
       padding-top: 88px;
       width: 342px;
       height: 478px;
+      vertical-align: top;
     }
   }
   .movie-content, .movie-comments {
@@ -347,6 +350,7 @@ a {
         img {
           width: 160px;
           height: 224px;
+          vertical-align: top;
         }
         .movie-people_name {
           padding: 0 10px;
@@ -367,6 +371,7 @@ a {
         img {
           width: 440px;
           height: 320px;
+          vertical-align: top;
         }
         &:not(:last-child) {
           margin-right: 10px;
@@ -374,7 +379,136 @@ a {
       }
     }
   }
-
+  .movie-comments {
+    .header {
+      height: 100px;
+      line-height: 100px;
+      font-size: 28px;
+      text-align: center;
+      background-color: #edeff2;
+      margin-bottom: 56px;
+      color: #494949;
+    }
+    .comments, .reviews {
+      padding: 0 40px;
+    }
+    .comments {
+      margin-bottom: 56px;
+      border-bottom: 1px solid #dfdfdf;
+      .label {
+        font-size: 32px;
+        height: 48px;
+        line-height: 48px;
+        color: #494949;
+      }
+      .comments-list {
+        ul {
+          li {
+            display: flex;
+            margin-top: 46px;
+            .avatar-image {
+              width: 60px;
+              height: 60px;
+              margin-right: 20px;
+              border-radius: 50%;
+              overflow: hidden;
+              img {
+                width: 100%;
+                height: 100%;
+                vertical-align: top;
+              }
+            }
+            .comment-content {
+              flex: 1;
+              .author-info {
+                display: flex;
+                height: 55px;
+                line-height: 55px;
+                .author_name {
+                  flex: 1;
+                  span {
+                    font-size: 28px;
+                    font-weight: 600;
+                    color: #494949;
+                  }
+                }
+                .useful_count {
+                  font-size: 28px;
+                  color: #ccc;
+                }
+              }
+              .content {
+                line-height: 44px;
+                font-size: 30px;
+                color: #494949;
+              }
+              .created-at {
+                height: 58px;
+                line-height: 58px;
+                color: #ccc;
+                font-size: 28px;
+              }
+            }
+          }
+        }
+      }
+      .comments_count {
+        height: 118px;
+        line-height: 118px;
+        margin-top: 17px;
+        font-size: 28px;
+        color: #42bd56;
+        text-align: center;
+      }
+    }
+    .reviews {
+      .label {
+        font-size: 32px;
+        height: 48px;
+        line-height: 48px;
+        color: #494949;
+      }
+      .reviews_count {
+        height: 100px;
+        line-height: 100px;
+        font-size: 26px;
+        color: #9b9b9b;
+      }
+      .reviews-list {
+        ul {
+          li {
+            .reviews-title {
+              line-height: 46px;
+              font-size: 36px;
+              font-weight: 600;
+              color: #494949;
+            }
+            .author_name {
+              height: 54px;
+              line-height: 54px;
+              span {
+                font-size: 24px;
+                color: #494949;
+              }
+              star {
+                i {
+                  color: #faa032;
+                }
+              }
+            }
+            .summary {
+              line-height: 38px;
+              font-size: 25px;
+              color: #9b9b9b;
+            }
+            &:not(:last-child) {
+              margin-bottom: 65px;
+            }
+          }
+        }
+      }
+    }
+  }
   
 }
 </style>

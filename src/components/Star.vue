@@ -15,6 +15,9 @@
 		props: {
 			stars: {
 				type: Number
+			},
+			color: {
+				type: String
 			}
 		},
 		computed: {
