@@ -48,11 +48,10 @@
       <mt-tab-container-item id="2">
           <mt-loadmore :auto-fill="false" :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore2">
             <ul class="movie-item">
-              <li v-for="n in comingSoonData.subjects" :key="n.id" @click="toDetail(n.id)">
+              <li v-for="n in comingSoonData.subjects" :key="n.id" @click="toDetail(n.id, $event)">
                 <div class="movie-img"><img v-lazy="n.images.medium" :alt="n.title"></div>
                 <div class="movie-info">
                   <h3 class="title">{{n.title}}</h3>
-                  <div class="rating"></div>
                   <div class="staff">
                     <p>导演：<span v-for="d in n.directors">{{d.name}}</span></p>
                     <p>演员：<span v-for="c in n.casts">{{c.name}}</span></p>
