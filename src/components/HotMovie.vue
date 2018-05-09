@@ -281,7 +281,6 @@ export default {
     top: 174px;
     bottom: 98px;
     overflow: scroll;
-    border-bottom: 1px solid red;
     .mint-loadmore {
       .movie-item {
         li {
@@ -377,8 +376,6 @@ image[lazy=loading] {
 }
 
 .child-view {
-  position: absolute;
-  width:100%;
   transition: all .8s cubic-bezier(.55,0,.1,1);
 }
 

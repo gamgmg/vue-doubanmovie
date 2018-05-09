@@ -22,6 +22,10 @@
 			refeash: {
 				type: Boolean,
 				default: false
+			},
+			click: {
+				type: Boolean,
+				default: true
 			}
 		},
 		data () {
@@ -34,7 +38,9 @@
 			let slider = this.$refs.slider
 			this.slider = new BScroll(slider, {
 				scrollX: this.direction === 'horizontal',
-				scrollY: this.direction === 'vertical'
+				scrollY: this.direction === 'vertical',
+				probeType: 3,
+				click: this.click
 			})
 		},
 		update () {
@@ -66,5 +72,8 @@
 	.slider {
 		width: 100%;
 		overflow: hidden;
+		.slider-group {
+			padding: 0 40px;
+		}
 	}
 </style>

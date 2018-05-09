@@ -5,6 +5,7 @@ import Subject from '@/components/Subject'
 import FindMovie from '@/components/FindMovie'
 import Search from '@/components/Search'
 import City from '@/components/City'
+import Celebrity from '@/components/Celebrity'
 
 Vue.use(Router)
 
@@ -26,7 +27,14 @@ export default new Router({
       	{
       		path: '/subject/:id',
       		name: 'Subject',
-      		component: Subject
+      		component: Subject,
+          children: [
+            {
+              path: '/celebrity/:id',
+              name: 'Celebrity',
+              component: Celebrity
+            }
+          ]
       	},
         {
           path: '/search',
@@ -43,7 +51,26 @@ export default new Router({
     {
       path: '/findMovie',
       name: 'FindMovie',
-      component: FindMovie
+      component: FindMovie,
+      children: [
+        {
+          path: '/subject/:id',
+          name: 'Subject',
+          component: Subject,
+          children: [
+            {
+              path: '/celebrity/:id',
+              name: 'Celebrity',
+              component: Celebrity
+            }
+          ]
+        },
+        {
+          path: '/search',
+          name: 'Search',
+          component: Search
+        }
+      ]
     }
   ]
 })

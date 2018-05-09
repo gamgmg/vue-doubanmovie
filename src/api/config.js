@@ -15,6 +15,8 @@ const URL = {
 	weekly: "https://api.douban.com/v2/movie/weekly",
 	/*新片榜*/
 	new_movies: "https://api.douban.com/v2/movie/new_movies",
+	/*影人*/
+	celebrity: "https://api.douban.com/v2/movie/celebrity",
 };
 
 const PARAM = {

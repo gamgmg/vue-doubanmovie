@@ -4,6 +4,7 @@ import {URL, apikey} from "./config"
 // 获取正在热映数据
 export function getInTheatersData (params = {start: 0, count: 20, city: '广州'}) {
 	const data = Object.assign({}, {
+		apikey,
 		start: params.start,
 		count: params.count,
 		city: params.city
@@ -13,6 +14,7 @@ export function getInTheatersData (params = {start: 0, count: 20, city: '广州'
 // 获取即将上映数据
 export function getComingSoonData (params = {start: 0, count: 20}) {
 	const data = Object.assign({}, {
+		apikey,
 		start: params.start,
 		count: params.count
 	})
@@ -44,4 +46,22 @@ export function getMoviePhotosData (id) {
 		city: '广州'
 	})
 	return jsonp(URL.subject + '/' + id + '/photos', data)
+}
+
+// 电影长评
+export function getSubjectReviewsData (id, start = 0, count = 20) {
+	const data = Object.assign({}, {
+		apikey,
+		start,
+		count
+	})
+	return jsonp(URL.subject + '/' + id + '/reviews', data)
+}
+
+// 影人
+export function getCelebrityData (id) {
+	const data = Object.assign({}, {
+		apikey
+	})
+	return jsonp(URL.celebrity + '/' + id, data)
 }
