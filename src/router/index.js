@@ -7,12 +7,14 @@ import Search from '@/components/Search'
 import City from '@/components/City'
 import Celebrity from '@/components/Celebrity'
 
-Vue.use(Router)
-
 Router.prototype.goBack = function () {
+  console.log('点击回退')
+  console.log(this)
   this.isBack = true
   window.history.go(-1)
 }
+
+Vue.use(Router)
 
 export default new Router({
   routes: [

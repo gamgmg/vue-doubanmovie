@@ -158,7 +158,7 @@ export default {
   beforeRouteUpdate (to, from, next) {
     // 如果isBack为true时，证明是用户点击了回退，执行slide-right动画
     let isBack = this.$router.isBack
-    console.log(isBack)
+    console.log(this.$router.isBack)
     if (isBack) {
       this.transitionName = 'slide-right'
     } else {
@@ -189,9 +189,6 @@ export default {
       })
     })
   },
-  update () {
-    console.log('我看你什么时候update')
-  },
   methods: {
     getSubject (res) {
       this.getSubjectReviews()
@@ -215,21 +212,13 @@ export default {
       this.summaryOpen = true
       this.$refs.summary.style.webkitLineClamp = 'inherit'
     },
-    getMoviePhotos () {
-      let id = this.$router.history.current.params.id
-      getMoviePhotosData(id).then(res => {
-        if(res){
-          // console.log('photos',res)
-        }
-      })
-    },
     getSubjectReviews () {
-      let id = this.$router.history.current.params.id
+      let id = this.$route.params.id
       getSubjectReviewsData(id).then(res => {
         if(res){
           this.reviewsData = res
           this.nextStart = this.reviewsData.next_start
-          console.log('reviews',this.reviewsData)
+          // console.log('reviews',this.reviewsData)
         }
       })
     },

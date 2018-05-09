@@ -45,8 +45,6 @@ export default {
     })
   },
   mounted () {
-  	console.log(this.$refs.celebrityDOM.scrollTop)
-  	this.$refs.celebrityDOM.scrollTop = 0
   },
   methods: {
   	getCelebrity (res) {
