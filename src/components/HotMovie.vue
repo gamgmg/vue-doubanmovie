@@ -69,9 +69,9 @@
       </mt-tab-container-item>
       <mt-spinner v-if="loading" class="loading" type="snake"></mt-spinner>
     </mt-tab-container>
-    <transition :name="transitionName">
+    <!-- <transition :name="transitionName">
       <router-view class="child-view"/>
-    </transition>
+    </transition> -->
   </div>
 </template>
 
@@ -103,7 +103,7 @@ export default {
       inTheatersStart: 0,
       comingSoonStart: 0,
       loading: false,
-      transitionName: 'slide-left'
+      // transitionName: 'slide-left'
     }
   },
   components: {
@@ -115,18 +115,19 @@ export default {
       this.getInTheaters()
     }
   },
-  beforeRouteUpdate (to, from, next) {
-    // 如果isBack为true时，证明是用户点击了回退，执行slide-right动画
-    let isBack = this.$router.isBack
-    if (isBack) {
-      this.transitionName = 'slide-right'
-    } else {
-      this.transitionName = 'slide-left'
-    }
-    // 做完回退动画后，要设置成前进动画，否则下次打开页面动画将还是回退
-    this.$router.isBack = false
-    next()
-  },
+  // beforeRouteUpdate (to, from, next) {
+  //   // 如果isBack为true时，证明是用户点击了回退，执行slide-right动画
+  //   console.log('to',this.$router.isBack)
+  //   let isBack = this.$router.isBack
+  //   if (isBack) {
+  //     this.transitionName = 'slide-right'
+  //   } else {
+  //     this.transitionName = 'slide-left'
+  //   }
+  //   // 做完回退动画后，要设置成前进动画，否则下次打开页面动画将还是回退
+  //   this.$router.isBack = false
+  //   next()
+  // },
   computed: {
     cityed () {
       return this.$store.state.cityed
@@ -164,7 +165,7 @@ export default {
       getInTheatersData({city: this.cityed}).then((res) => {
         if (res) {
           this.loading = false
-          console.log(res)
+          // console.log(res)
           this.inTheatersData = res
           cb && cb()
         }
@@ -174,7 +175,7 @@ export default {
       getComingSoonData().then((res) => {
         if (res) {
           this.loading = false
-          console.log(res)
+          // console.log(res)
           this.comingSoonData = res
           cb && cb()
         }
@@ -190,7 +191,7 @@ export default {
         this.inTheatersStart += 20
         getInTheatersData({start: this.inTheatersStart, city: this.cityed}).then((res) => {
           if (res) {
-            console.log(res)
+            // console.log(res)
             this.inTheatersData.subjects = this.inTheatersData.subjects.concat(res.subjects)
             this.$refs.loadmore1.onBottomLoaded()
             if(this.inTheatersData.subjects.length === res.total){
@@ -202,7 +203,7 @@ export default {
         this.comingSoonStart += 20
         getComingSoonData({start: this.comingSoonStart}).then((res) => {
           if (res) {
-            console.log(res)
+            // console.log(res)
             this.comingSoonData.subjects = this.comingSoonData.subjects.concat(res.subjects)
             this.$refs.loadmore2.onBottomLoaded()
             if(this.comingSoonData.subjects.length === res.total){
@@ -374,32 +375,4 @@ export default {
 image[lazy=loading] {
   background-color: #e5e5e5;
 }
-
-.child-view {
-  transition: all .8s cubic-bezier(.55,0,.1,1);
-}
-
-.slide-left-enter, .slide-right-leave-active {
-  opacity: 0;
-  -webkit-transform: translate(50px, 0);
-  transform: translate(50px, 0);
-}
-.slide-left-leave-active, .slide-right-enter {
-  opacity: 0;
-  -webkit-transform: translate(-50px, 0);
-  transform: translate(-50px, 0);
-}
-</style>
-
-<style>
-/*.slide-left-enter-active, .slide-left-leave-active {
-  transition: transform .3s;
-  transform: translate3d(0, 0, 0);
-}
-.slide-left-enter, .slide-left-leave-to  .fade-leave-active below version 2.1.8  {
-  transform: translate3d(100%, 0 , 0);
-}
-.slide-left-enter-to, .slide-left-leave {
-  transform: translate3d(0, 0 , 0);
-}*/
 </style>

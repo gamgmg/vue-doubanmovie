@@ -1,7 +1,7 @@
 <template>
 	<div class="celebrity" v-if="this.celebrityData" ref="celebrityDOM">
 		<div class="wrapper">
-			<mt-header fixed :title="影人" class="mt-header" ref="mtheaderDOM">
+			<mt-header fixed :title="this.celebrityTitle" class="mt-header" ref="mtheaderDOM">
         <mt-button icon="back" slot="left" @click="back"></mt-button>
       </mt-header>
       <section class="movie-poster" ref="posterBg">
@@ -23,7 +23,8 @@ export default {
 	name: 'celebrity',
 	data () {
 		return {
-			celebrityData: null
+			celebrityData: null,
+			celebrityTitle: '影人'
 		}
 	},
 	beforeRouteEnter (to, from, next) {
@@ -32,15 +33,6 @@ export default {
         next(vm => {
           vm.getCelebrity(res)
         })
-      }
-    })
-  },
-  beforeRouteUpdate (to, from, next) {
-    getCelebrityData(to.params.id).then((res) => {
-      if(res){
-        this.celebrityData = null
-        this.getCelebrity(res)
-        next()
       }
     })
   },

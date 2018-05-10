@@ -108,9 +108,9 @@
         </section>
       </mt-loadmore>
     </div>
-    <transition :name="transitionName">
-      <router-view class="child-view"/>
-    </transition>
+    <!-- <transition :name="transitionName"> -->
+      <!-- <router-view /> -->
+    <!-- </transition> -->
   </div>
 </template>
 
@@ -122,9 +122,9 @@ import Star from './Star'
 import Slider from './Slider'
 import RGBaster from '../utils/rgbaster'
 
-Vue.component(Header.name, Header)
-Vue.component(Button.name, Button)
-Vue.component(Loadmore.name, Loadmore)
+Vue.use(Header)
+Vue.use(Button)
+Vue.use(Loadmore)
 Vue.use(Lazyload)
 
 export default {
@@ -146,32 +146,38 @@ export default {
     Star,
     Slider
   },
-  beforeRouteEnter (to, from, next) {
-    getSubjectData(to.params.id).then((res) => {
+  created () {
+    getSubjectData(this.$route.params.id).then((res) => {
       if(res){
-        next(vm => {
-          vm.getSubject(res)
-        })
+        this.getSubject(res)
       }
     })
   },
-  beforeRouteUpdate (to, from, next) {
-    // 如果isBack为true时，证明是用户点击了回退，执行slide-right动画
-    let isBack = this.$router.isBack
-    console.log(this.$router.isBack)
-    if (isBack) {
-      this.transitionName = 'slide-right'
-    } else {
-      this.transitionName = 'slide-left'
-    }
-    // 做完回退动画后，要设置成前进动画，否则下次打开页面动画将还是回退
-    this.$router.isBack = false
-    next()
-  },
   mounted () {
-    this.$nextTick(()=>{
-      let self = this
-      setTimeout(()=>{
+    // this.$nextTick(()=>{
+    //   let self = this
+    //   setTimeout(()=>{
+    //     let clientWidth = this.$refs.subjectDOM.clientWidth
+    //     let mtheader = document.querySelector('.mt-header')
+    //     this.$refs.wrapper.addEventListener('scroll', () => {
+    //       let scrollTop = this.$refs.wrapper.scrollTop
+    //       //640:710 = 70 9.142 750:832 = 82 9.146 1242:1376 = 134 9.268 1125:1244 = 119  9.453
+    //       let top = clientWidth + clientWidth / 9.25
+    //       if(scrollTop <= top){
+    //         self.subjectTitle = '电影'
+    //         mtheader.style.backgroundColor = `rgba(${self.dominant + ',' + (1000 - top + scrollTop) * .001})`
+    //       }else{
+    //         mtheader.style.backgroundColor = `rgba(${self.dominant},1)`
+    //         self.subjectTitle = self.subjectData.title
+    //       }
+    //     }, false)
+    //   })
+    // })
+  },
+  watch: {
+    $refs (val, oldval) {
+      console.log(val)
+      if(val){
         let clientWidth = this.$refs.subjectDOM.clientWidth
         let mtheader = document.querySelector('.mt-header')
         this.$refs.wrapper.addEventListener('scroll', () => {
@@ -179,20 +185,20 @@ export default {
           //640:710 = 70 9.142 750:832 = 82 9.146 1242:1376 = 134 9.268 1125:1244 = 119  9.453
           let top = clientWidth + clientWidth / 9.25
           if(scrollTop <= top){
-            self.subjectTitle = '电影'
-            mtheader.style.backgroundColor = `rgba(${self.dominant + ',' + (1000 - top + scrollTop) * .001})`
+            this.subjectTitle = '电影'
+            mtheader.style.backgroundColor = `rgba(${this.dominant + ',' + (1000 - top + scrollTop) * .001})`
           }else{
-            mtheader.style.backgroundColor = `rgba(${self.dominant},1)`
-            self.subjectTitle = self.subjectData.title
+            mtheader.style.backgroundColor = `rgba(${this.dominant},1)`
+            this.subjectTitle = this.subjectData.title
           }
         }, false)
-      })
-    })
+      }
+    }
   },
   methods: {
     getSubject (res) {
       this.getSubjectReviews()
-      console.log('res',res)
+      // console.log('res',res)
       this.subjectData = res
       this.movier = this.movier.concat(res.directors, res.casts) //拼接影人数据
       let self = this
@@ -586,7 +592,10 @@ a {
     }
   }
 }
-.child-view {
+
+</style>
+<style>
+/*.child-view {
   transition: all .8s cubic-bezier(.55,0,.1,1);
 }
 
@@ -599,5 +608,5 @@ a {
   opacity: 0;
   -webkit-transform: translate(-50px, 0);
   transform: translate(-50px, 0);
-}
+}*/
 </style>

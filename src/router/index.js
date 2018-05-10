@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Tabbar from '@/components/Tabbar'
 import HotMovie from '@/components/HotMovie'
 import Subject from '@/components/Subject'
 import FindMovie from '@/components/FindMovie'
@@ -8,8 +9,6 @@ import City from '@/components/City'
 import Celebrity from '@/components/Celebrity'
 
 Router.prototype.goBack = function () {
-  console.log('点击回退')
-  console.log(this)
   this.isBack = true
   window.history.go(-1)
 }
@@ -20,24 +19,33 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HotMovie',
-      component: HotMovie,
-      meta: {
-        keepAlive: true
-      },
+      name: 'Tabbar',
+      component: Tabbar,
+      redirect: '/hotMovie',
       children: [
-      	{
-      		path: '/subject/:id',
-      		name: 'Subject',
-      		component: Subject,
-          children: [
-            {
-              path: '/celebrity/:id',
-              name: 'Celebrity',
-              component: Celebrity
-            }
-          ]
-      	},
+        {
+          path: '/hotMovie',
+          name: 'HotMovie',
+          component: HotMovie,
+          meta: {
+            keepAlive: true
+          }
+        },
+        {
+          path: '/findMovie',
+          name: 'FindMovie',
+          component: FindMovie
+        },
+        {
+          path: '/subject/:id',
+          name: 'Subject',
+          component: Subject
+        },
+        {
+          path: '/celebrity/:id',
+          name: 'Celebrity',
+          component: Celebrity
+        },
         {
           path: '/search',
           name: 'Search',
@@ -47,30 +55,6 @@ export default new Router({
           path: '/city',
           name: 'City',
           component: City
-        }
-      ]
-    },
-    {
-      path: '/findMovie',
-      name: 'FindMovie',
-      component: FindMovie,
-      children: [
-        {
-          path: '/subject/:id',
-          name: 'Subject',
-          component: Subject,
-          children: [
-            {
-              path: '/celebrity/:id',
-              name: 'Celebrity',
-              component: Celebrity
-            }
-          ]
-        },
-        {
-          path: '/search',
-          name: 'Search',
-          component: Search
         }
       ]
     }
