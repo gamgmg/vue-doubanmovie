@@ -14,9 +14,9 @@
 		props: {
 			direction: {
 				type: String,
-				validator (value) {
-					return [ 'horizontal', 'vertical' ].indexOf(value) !== 1
-				},
+				// validator (value) {
+				// 	return [ 'horizontal', 'vertical' ].indexOf(value) !== 1
+				// },
 				default: 'horizontal'
 			},
 			refeash: {
@@ -34,7 +34,9 @@
 			}
 		},
 		mounted () {
-			this.setSliderWidth()
+			if(this.direction === 'horizontal'){
+				this.setSliderWidth()
+			}
 			let slider = this.$refs.slider
 			this.slider = new BScroll(slider, {
 				scrollX: this.direction === 'horizontal',
@@ -42,10 +44,11 @@
 				probeType: 3,
 				click: this.click
 			})
+			this.refresh()
 		},
 		update () {
-			if(this.bScroll && this.refresh){
-				this.bScroll.refresh()
+			if(this.slider && this.refresh){
+				this.slider.refresh()
 			}
 		},
 		methods: {
@@ -60,8 +63,8 @@
 				this.$refs.sliderGroup.style.width = width + 'px'
 			},
 			refresh () {
-				if(this.bScroll){
-					this.bScroll.refresh()
+				if(this.slider){
+					this.slider.refresh()
 				}
 			}
 		}
@@ -71,9 +74,7 @@
 <style lang="scss">
 	.slider {
 		width: 100%;
+		height: 100%;
 		overflow: hidden;
-		.slider-group {
-			padding: 0 40px;
-		}
 	}
 </style>

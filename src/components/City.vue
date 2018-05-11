@@ -6,7 +6,6 @@
     <mt-index-list>
       <mt-index-section v-for="(c, key) in city" :key="key" :index="key">
         <li class="city-list" v-for="(cc, i) in c" :key="i" :title="cc" @click="selectCity(cc)">{{cc}}</li>
-        <!-- <mt-cell v-for="(cc, i) in c" :key="i" :title="cc" @click="selectCity(cc)"></mt-cell> -->
       </mt-index-section>
     </mt-index-list>
   </div>
@@ -14,12 +13,13 @@
 
 <script>
 import Vue from 'vue'
-import { IndexList, IndexSection, Cell, Header } from 'mint-ui'
+import { IndexList, IndexSection, Cell, Header, Button } from 'mint-ui'
 
 Vue.component(IndexList.name, IndexList)
 Vue.component(IndexSection.name, IndexSection)
 Vue.component(Cell.name, Cell)
 Vue.component(Header.name, Header)
+Vue.use(Button)
 export default {
   name: 'city',
   data () {
@@ -45,11 +45,11 @@ export default {
   },
   methods: {
     back () {
-      this.$router.back()
+      this.$router.goBack()
     },
     selectCity (city) {
       this.$store.dispatch('selectCity', city)
-      this.$router.push('/')
+      this.$router.goBack()
     }
   }
 }
@@ -66,7 +66,19 @@ export default {
   background-color: #fff;
   z-index: 100;
   text-align: left;
+  .mint-header {
+    height: 88px;
+    line-height: 88px;
+    background-color: #f4f4f4;
+    .mintui {
+      font-size: 36px;
+    }
+    h1 {
+      font-size: 32px;
+    }
+  }
   .mint-indexlist {
+    margin-top: 88px;
     .mint-indexsection {
       .mint-indexsection-index {
         font-size: 25px;

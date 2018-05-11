@@ -3,11 +3,17 @@
 
     
     <transition :name="transitionName">
-	    <keep-alive>
-	      <router-view class="child-view" ref="childView"/>
-	    </keep-alive>
-    	<!-- <router-view class="child-view" v-if="!$route.meta.keepAlive"/> -->
+	    <navigation>
+	    	<!-- <keep-alive> -->
+	      	<router-view class="child-view" ref="childView"/>
+	      <!-- </keep-alive> -->
+	    </navigation>
     </transition>
+    <!-- <transition :name="transitionName">
+    	<navigation>
+  			<router-view class="child-view" v-if="!$route.meta.keepAlive" ref="childView"/>
+  		</navigation>
+    </transition> -->
 
     
     <mt-tabbar v-model="selected" fixed>
@@ -25,6 +31,7 @@
 
 <script>
 import Vue from 'vue'
+import router from '../router'
 import { Tabbar, TabItem, TabContainer, TabContainerItem, Cell } from 'mint-ui'
 
 Vue.component(Tabbar.name, Tabbar)
@@ -32,6 +39,7 @@ Vue.component(TabItem.name, TabItem)
 Vue.component(TabContainer.name, TabContainer)
 Vue.component(TabContainerItem.name, TabContainerItem)
 Vue.component(Cell.name, Cell)
+
 export default {
   name: 'tabber',
   data () {
@@ -55,6 +63,20 @@ export default {
 	  }
 	  this.$router.isBack = false
 	  next()
+	},
+	created () {
+		// this.$navigation.on('forward', (to, from) => {
+  //     if(to.route.name === 'HotMovie' && from.route.name === 'FindMovie' || to.route.name === 'FindMovie' && from.
+  //     	route.name === 'HotMovie'){
+
+  //     console.log('forward to', to, 'from ', from)
+  //     	to.route.meta.keepAlive = true
+  //     	from.route.meta.keepAlive = true
+  //     }
+  //   })
+  //   this.$navigation.on('back', (to, from) => {
+  //     console.log('back to', to, 'from ', from)
+  //   })
 	},
   watch: {
     selected: function (val, oldVal) {
@@ -101,6 +123,7 @@ export default {
 }
 .child-view {
   transition: all .3s;
+  transform: translate3d(0,0,0);
 }
 
 .slide-left-enter, .slide-right-leave-active {

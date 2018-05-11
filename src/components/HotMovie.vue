@@ -69,9 +69,6 @@
       </mt-tab-container-item>
       <mt-spinner v-if="loading" class="loading" type="snake"></mt-spinner>
     </mt-tab-container>
-    <!-- <transition :name="transitionName">
-      <router-view class="child-view"/>
-    </transition> -->
   </div>
 </template>
 
@@ -103,31 +100,18 @@ export default {
       inTheatersStart: 0,
       comingSoonStart: 0,
       loading: false,
-      // transitionName: 'slide-left'
     }
   },
   components: {
     Star
   },
   created () {
+    console.log(this.inTheatersData.subjects)
     if(!this.inTheatersData.subjects){
       this.loading = true
       this.getInTheaters()
     }
   },
-  // beforeRouteUpdate (to, from, next) {
-  //   // 如果isBack为true时，证明是用户点击了回退，执行slide-right动画
-  //   console.log('to',this.$router.isBack)
-  //   let isBack = this.$router.isBack
-  //   if (isBack) {
-  //     this.transitionName = 'slide-right'
-  //   } else {
-  //     this.transitionName = 'slide-left'
-  //   }
-  //   // 做完回退动画后，要设置成前进动画，否则下次打开页面动画将还是回退
-  //   this.$router.isBack = false
-  //   next()
-  // },
   computed: {
     cityed () {
       return this.$store.state.cityed
@@ -373,6 +357,6 @@ export default {
 }
 
 image[lazy=loading] {
-  background-color: #e5e5e5;
+  background-image: url(../assets/movie_default_large.png);
 }
 </style>

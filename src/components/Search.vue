@@ -1,15 +1,32 @@
 <template>
   <div class="search">
   	<div class="search-top">
-  		<i class="icon-chevron-left back" @click="back"></i>
-  		<!-- <mt-button icon="back" slot="left" @click="back"></mt-button> -->
+  		<!-- <i class="icon-chevron-left back" @click="back"></i> -->
+  		<mt-button icon="back" slot="left" @click="back"></mt-button>
   		<input autofocus type="search" @change="searchData($event)" placeholder="电影/电视剧/影人">
   	</div>
 		<div class="search-result">
 			<mt-loadmore :auto-fill="false" :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore">
-				<ul class="result-item">
-					<li v-for="item in resultData.subjects" :key="item.id" @click="toSubject(item.id)">{{item.title}}</li>
-				</ul>
+				<span>共{{this.resultData.total}}个影视</span>
+        <ul class="result-item">
+          <li v-for="n in resultData.subjects" :key="n.id" @click="toSubject(n.id)">
+            <div class="movie-img"><img v-lazy="n.images.large" :alt="n.title"></div>
+            <div class="movie-info">
+              <h3 class="title">{{n.title}}</h3>
+              <div class="rating">
+                <span v-if="n.rating.average !== 0">
+                  <Star :stars="Number(n.rating.stars)"/>
+                  <span>{{n.rating.average}}</span>
+                </span>
+                <span v-else>暂无平分</span>
+              </div>
+              <div class="staff">
+                <p>导演：<span v-for="d in n.directors">{{d.name}}</span></p>
+                <p>主演：<span v-for="c in n.casts">{{c.name}}</span></p>
+              </div>
+            </div>
+          </li>
+        </ul>
 			</mt-loadmore>
 			<mt-spinner v-if="loading" class="loading" type="snake"></mt-spinner>
 		</div>
@@ -19,7 +36,7 @@
 import Vue from 'vue'
 import { Loadmore, Spinner } from 'mint-ui'
 import { getSearchData } from '../api/hotMovie'
-import '../assets/icomoon/style.css'
+import Star from './Star'
 
 Vue.component(Spinner.name, Spinner)
 
@@ -27,16 +44,22 @@ export default {
   name: 'search',
   data () {
     return {
-			keywords: '',
-			resultData: {},
+			keywords: 'asd',
+			resultData: null,
 			allLoaded: false,
 			loading: false,
 			searchStart: 0,
     }
   },
+  components: {
+    Star
+  },
+  created () {
+    this.searchData()
+  },
   methods: {
   	searchData (e) {
-  		this.keywords = e.target.value
+  		// this.keywords = e.target.value
   		this.loading = true
   		getSearchData(this.keywords).then((res) => {
   			console.log(res)
@@ -77,13 +100,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-a {
-  color: #42b983;
-}
+<style lang="scss" scoped>
 .search {
   position: absolute;
   overflow: scroll;
@@ -94,7 +111,7 @@ a {
   z-index: 100;
 }
 .result-item li {
-  line-height: 288px;
+  height: 288px;
 }
 .search-result {
   position: absolute;
@@ -110,13 +127,18 @@ a {
   align-items: center;
 }
 .back {
-	font-size: 1rem;
+	font-size: 26px;
 }
+
 .loading {
   position: absolute;
   top: 50%;
-  margin-top: -.56rem;
+  margin-top: -15px;
   left: 50%;
-  margin-left: -.56rem;
+  margin-left: -15px;
+}
+
+image[lazy=loading] {
+  background-image: url(../assets/movie_default_large.png);
 }
 </style>

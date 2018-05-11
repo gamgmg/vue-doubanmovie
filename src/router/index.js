@@ -27,9 +27,6 @@ export default new Router({
           path: '/hotMovie',
           name: 'HotMovie',
           component: HotMovie,
-          meta: {
-            keepAlive: true
-          }
         },
         {
           path: '/findMovie',

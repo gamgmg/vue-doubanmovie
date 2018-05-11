@@ -27,16 +27,12 @@ export default {
 			celebrityTitle: '影人'
 		}
 	},
-	beforeRouteEnter (to, from, next) {
-    getCelebrityData(to.params.id).then((res) => {
+	created () {
+    getCelebrityData(this.$route.params.id).then((res) => {
       if(res){
-        next(vm => {
-          vm.getCelebrity(res)
-        })
+        this.getCelebrity(res)
       }
     })
-  },
-  mounted () {
   },
   methods: {
   	getCelebrity (res) {
@@ -57,7 +53,7 @@ export default {
   width: 100%;
   overflow: hidden;
   background-color: #fff;
-  z-index: 200;
+  z-index: 100;
   .wrapper {
   	position: absolute;
     width: 100%;

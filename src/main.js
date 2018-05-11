@@ -7,6 +7,10 @@ import store from './vuex/store'
 import moment from 'moment'
 import 'moment/locale/zh-cn'
 
+import Navigation from 'vue-navigation'
+
+Vue.use(Navigation, { router, store })
+
 Vue.config.productionTip = false
 Vue.prototype.moment = moment
 

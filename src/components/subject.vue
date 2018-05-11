@@ -108,9 +108,6 @@
         </section>
       </mt-loadmore>
     </div>
-    <!-- <transition :name="transitionName"> -->
-      <!-- <router-view /> -->
-    <!-- </transition> -->
   </div>
 </template>
 
@@ -153,45 +150,28 @@ export default {
       }
     })
   },
-  mounted () {
-    // this.$nextTick(()=>{
-    //   let self = this
-    //   setTimeout(()=>{
-    //     let clientWidth = this.$refs.subjectDOM.clientWidth
-    //     let mtheader = document.querySelector('.mt-header')
-    //     this.$refs.wrapper.addEventListener('scroll', () => {
-    //       let scrollTop = this.$refs.wrapper.scrollTop
-    //       //640:710 = 70 9.142 750:832 = 82 9.146 1242:1376 = 134 9.268 1125:1244 = 119  9.453
-    //       let top = clientWidth + clientWidth / 9.25
-    //       if(scrollTop <= top){
-    //         self.subjectTitle = '电影'
-    //         mtheader.style.backgroundColor = `rgba(${self.dominant + ',' + (1000 - top + scrollTop) * .001})`
-    //       }else{
-    //         mtheader.style.backgroundColor = `rgba(${self.dominant},1)`
-    //         self.subjectTitle = self.subjectData.title
-    //       }
-    //     }, false)
-    //   })
-    // })
-  },
   watch: {
-    $refs (val, oldval) {
-      console.log(val)
+    subjectData (val, oldval) {
       if(val){
-        let clientWidth = this.$refs.subjectDOM.clientWidth
-        let mtheader = document.querySelector('.mt-header')
-        this.$refs.wrapper.addEventListener('scroll', () => {
-          let scrollTop = this.$refs.wrapper.scrollTop
-          //640:710 = 70 9.142 750:832 = 82 9.146 1242:1376 = 134 9.268 1125:1244 = 119  9.453
-          let top = clientWidth + clientWidth / 9.25
-          if(scrollTop <= top){
-            this.subjectTitle = '电影'
-            mtheader.style.backgroundColor = `rgba(${this.dominant + ',' + (1000 - top + scrollTop) * .001})`
-          }else{
-            mtheader.style.backgroundColor = `rgba(${this.dominant},1)`
-            this.subjectTitle = this.subjectData.title
-          }
-        }, false)
+        this.$nextTick(()=>{
+          let self = this
+          setTimeout(()=>{
+            let clientWidth = this.$refs.subjectDOM.clientWidth
+            let mtheader = document.querySelector('.mt-header')
+            this.$refs.wrapper.addEventListener('scroll', () => {
+              let scrollTop = this.$refs.wrapper.scrollTop
+              //640:710 = 70 9.142 750:832 = 82 9.146 1242:1376 = 134 9.268 1125:1244 = 119  9.453
+              let top = clientWidth + clientWidth / 9.25
+              if(scrollTop <= top){
+                self.subjectTitle = '电影'
+                mtheader.style.backgroundColor = `rgba(${self.dominant + ',' + (1000 - top + scrollTop) * .001})`
+              }else{
+                mtheader.style.backgroundColor = `rgba(${self.dominant},1)`
+                self.subjectTitle = self.subjectData.title
+              }
+            }, false)
+          })
+        })
       }
     }
   },
@@ -592,21 +572,7 @@ a {
     }
   }
 }
-
-</style>
-<style>
-/*.child-view {
-  transition: all .8s cubic-bezier(.55,0,.1,1);
+.slider-group {
+  padding: 0 40px;
 }
-
-.slide-left-enter, .slide-right-leave-active {
-  opacity: 0;
-  -webkit-transform: translate(50px, 0);
-  transform: translate(50px, 0);
-}
-.slide-left-leave-active, .slide-right-enter {
-  opacity: 0;
-  -webkit-transform: translate(-50px, 0);
-  transform: translate(-50px, 0);
-}*/
 </style>
